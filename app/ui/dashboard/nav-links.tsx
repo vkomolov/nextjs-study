@@ -1,3 +1,21 @@
+"use client";
+
+/**
+ * To improve the navigation experience, Next.js automatically code splits your application by route segments.
+ * //@ This is different from a traditional React SPA, where the browser loads all your application code on initial load.
+ *
+ * Splitting code by routes means that pages become isolated. If a certain page throws an error,
+ * the rest of the application will still work.
+ *
+ * Futhermore, in production, whenever <Link> components appear in the browser's viewport,
+ * //! Next.js automatically prefetches the code for the linked route in the background.
+ * //! By the time the user clicks the link, the code for the destination page will already be loaded in the background,
+ * //! and this is what makes the page transition near-instant!
+ */
+
+import Link from 'next/link';
+import { usePathname } from "next/navigation";
+import { clsx } from "clsx";
 import {
   UserGroupIcon,
   HomeIcon,
@@ -17,19 +35,27 @@ const links = [
 ];
 
 export default function NavLinks() {
+  const pathname = usePathname();
+
   return (
     <>
       {links.map((link) => {
         const LinkIcon = link.icon;
         return (
-          <a
+          <Link
             key={link.name}
             href={link.href}
-            className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            className={ clsx(
+                'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm ' +
+                'font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3',
+                {
+                  'bg-sky-100 text-blue-600': pathname === link.href,
+                },
+            ) }
           >
             <LinkIcon className="w-6" />
             <p className="hidden md:block">{link.name}</p>
-          </a>
+          </Link>
         );
       })}
     </>

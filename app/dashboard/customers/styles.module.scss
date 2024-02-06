@@ -1,0 +1,6 @@
+@import '../../ui/_styles/main';
+
+.someClass {
+  @include init-font(16px, 700);
+  color: red;
+}
